@@ -38,15 +38,12 @@ pipeline {
             }
         }
 
-        stage('Code Checkout') {
-            steps {
-                checkout([
-                    $class: 'GitSCM', 
-                    branches: [[name: '*/main']], 
-                    userRemoteConfigs: [[url: 'https://github.com/Musyoka534/jenkins-pipeline.git']]
-                ])
-            }
-        }
+        stage ("Checkout from SCM") {
+                   steps{
+                    git branch: 'main', credentialsId: 'github-token', url: 'https://github.com/Musyoka534/jenkins-pipeline.git'
+                   }
+
+           }
 
         stage('Code Build') {
             steps {
