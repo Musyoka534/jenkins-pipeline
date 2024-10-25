@@ -33,13 +33,6 @@ pipeline {
 
            }
 
-        stage('Code Build') {
-            steps {
-                container('maven') {
-                 sh 'mvn install -Dmaven.test.skip=true'
-                }
-            }
-        }
 
         stage('Printing All Global Variables') {
             steps {
