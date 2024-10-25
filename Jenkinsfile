@@ -1,18 +1,6 @@
 pipeline {
     agent {
-        kubernetes {
-            yaml '''
-                apiVersion: v1
-                kind: Pod
-                spec:
-                  containers:
-                  - name: maven
-                    image: maven:3.8.4-openjdk-17
-                    command:
-                    - cat
-                    tty: true
-            '''
-        }
+        label 'kube-agent'
     }
 
     options {
