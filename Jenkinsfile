@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        label 'kube-agent'
+        label 'docker-build-agent'
     }
 
     options {
@@ -26,13 +26,23 @@ pipeline {
             }
         }
 
-        stage ("Checkout from SCM") {
-                   steps{
-                    git branch: 'main', credentialsId: 'github-token', url: 'https://github.com/Musyoka534/jenkins-pipeline.git'
-                   }
+        stage('Code Checkout') {
+            steps {
+                checkout([
+                    $class: 'GitSCM', 
+                    branches: [[name: '*/main']], 
+                    userRemoteConfigs: [[url: 'https://github.com/spring-projects/spring-petclinic.git']]
+                ])
+            }
+        }
 
-           }
-
+        stage('Code Build') {
+            steps {
+                container('maven') {
+                 sh 'mvn install -Dmaven.test.skip=true'
+                }
+            }
+        }
 
         stage('Printing All Global Variables') {
             steps {
